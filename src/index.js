@@ -61,16 +61,15 @@ const handle = async (ctx) => {
             }
 
             const request = requestConstruct(userConfig, imgList[i].fileName, img)
-            await ctx.Request.request(request)
-
+            res = await ctx.Request.request(request)
             delete imgList[i].base64Image
             delete imgList[i].buffer
-            imgList[i]['imgUrl'] = `${userConfig.ip}:${userConfig.port}/uploads/${imgList[i].fileName}`
+            imgList[i]['imgUrl'] = res.replace(/\"/g, "")
         }
         catch(err){
             delete imgList[i].base64Image
             delete imgList[i].buffer
-            imgList[i]['imgUrl'] = `http://${userConfig.ip}:${userConfig.port}/uploads/${imgList[i].fileName}`
+            imgList[i]['imgUrl'] = ""
         } 
     }
     return ctx
